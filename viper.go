@@ -1786,6 +1786,20 @@ func (v *Viper) marshalWriter(f afero.File, configType string) error {
 	return nil
 }
 
+func (v *Viper) EncodeConfig() ([]byte, error) {
+	configType := strings.ToLower(v.getConfigType())
+	c := v.AllSettings()
+	switch configType {
+	case "yaml", "yml", "json", "toml", "hcl", "tfvars", "ini", "prop", "props", "properties", "dotenv", "env":
+		b, err := v.encoderRegistry.Encode(configType, c)
+		if err != nil {
+			return nil, ConfigMarshalError{err}
+		}
+		return b, nil
+	}
+	return nil, nil
+}
+
 func keyExists(k string, m map[string]interface{}) string {
 	lk := strings.ToLower(k)
 	for mk := range m {
