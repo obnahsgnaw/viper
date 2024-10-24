@@ -1,9 +1,9 @@
 package encoding
 
 import (
-	"bytes"
 	"errors"
 	"github.com/obnahsgnaw/application/pkg/security"
+	"strings"
 )
 
 type Security struct {
@@ -30,9 +30,9 @@ func (s *Security) Encode(encoder Encoder, v map[string]interface{}) ([]byte, er
 	}
 	if s.key != nil {
 		var iv []byte
-		b, iv, err = s.es.Encrypt(b, s.key, false)
+		b, iv, err = s.es.Encrypt(b, s.key, true)
 		if err == nil {
-			b = bytes.Join([][]byte{b, iv}, []byte("@"))
+			b = []byte(string(b) + "@" + string(iv))
 		}
 	}
 	return b, err
@@ -42,11 +42,11 @@ func (s *Security) Decode(decoder Decoder, b []byte, v map[string]interface{}) e
 	if s.key != nil {
 		var iv []byte
 		var err error
-		bs := bytes.Split(b, []byte("@"))
+		bs := strings.Split(string(b), "@")
 		if len(bs) != 2 {
 			return errors.New("security codec: invalid format")
 		}
-		b, iv = bs[0], bs[1]
+		b, iv = []byte(bs[0]), []byte(bs[1])
 		b, err = s.es.Decrypt(b, s.key, iv, false)
 		if err != nil {
 			return err
