@@ -22,14 +22,24 @@ const (
 type EncoderRegistry struct {
 	encoders map[string]Encoder
 
-	mu sync.RWMutex
+	mu  sync.RWMutex
+	sec *Security
 }
 
 // NewEncoderRegistry returns a new, initialized EncoderRegistry.
 func NewEncoderRegistry() *EncoderRegistry {
 	return &EncoderRegistry{
 		encoders: make(map[string]Encoder),
+		sec:      newSecurity(),
 	}
+}
+
+func (e *EncoderRegistry) WithSecurity(key [16]byte) {
+	e.sec.WithKey(key)
+}
+
+func (e *EncoderRegistry) WithoutSecurity() {
+	e.sec.WithoutKey()
 }
 
 // RegisterEncoder registers an Encoder for a format.
@@ -56,5 +66,5 @@ func (e *EncoderRegistry) Encode(format string, v map[string]interface{}) ([]byt
 		return nil, ErrEncoderNotFound
 	}
 
-	return encoder.Encode(v)
+	return e.sec.Encode(encoder, v)
 }

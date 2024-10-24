@@ -512,6 +512,16 @@ func (v *Viper) SetConfigFile(in string) {
 	}
 }
 
+func (v *Viper) SetSecurity(key [16]byte) {
+	v.encoderRegistry.WithSecurity(key)
+	v.decoderRegistry.WithSecurity(key)
+}
+
+func (v *Viper) ClearSecurity() {
+	v.encoderRegistry.WithoutSecurity()
+	v.decoderRegistry.WithoutSecurity()
+}
+
 // SetEnvPrefix defines a prefix that ENVIRONMENT variables will use.
 // E.g. if your prefix is "spf", the env registry will look for env
 // variables that start with "SPF_".

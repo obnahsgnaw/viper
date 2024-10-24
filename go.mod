@@ -7,6 +7,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0
 	github.com/magiconair/properties v1.8.7
 	github.com/mitchellh/mapstructure v1.5.0
+	github.com/obnahsgnaw/application v0.17.10
 	github.com/pelletier/go-toml/v2 v2.0.8
 	github.com/sagikazarmark/crypt v0.10.0
 	github.com/spf13/afero v1.9.5
@@ -59,7 +60,7 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	go.uber.org/zap v1.21.0 // indirect
+	go.uber.org/zap v1.23.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
@@ -72,5 +73,5 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/grpc v1.55.0 // indirect
-	google.golang.org/protobuf v1.30.0 // indirect
+	google.golang.org/protobuf v1.33.0 // indirect
 )

@@ -22,14 +22,24 @@ const (
 type DecoderRegistry struct {
 	decoders map[string]Decoder
 
-	mu sync.RWMutex
+	mu  sync.RWMutex
+	sec *Security
 }
 
 // NewDecoderRegistry returns a new, initialized DecoderRegistry.
 func NewDecoderRegistry() *DecoderRegistry {
 	return &DecoderRegistry{
 		decoders: make(map[string]Decoder),
+		sec:      newSecurity(),
 	}
+}
+
+func (e *DecoderRegistry) WithSecurity(key [16]byte) {
+	e.sec.WithKey(key)
+}
+
+func (e *DecoderRegistry) WithoutSecurity() {
+	e.sec.WithoutKey()
 }
 
 // RegisterDecoder registers a Decoder for a format.
@@ -57,5 +67,5 @@ func (e *DecoderRegistry) Decode(format string, b []byte, v map[string]interface
 		return ErrDecoderNotFound
 	}
 
-	return decoder.Decode(b, v)
+	return e.sec.Decode(decoder, b, v)
 }
