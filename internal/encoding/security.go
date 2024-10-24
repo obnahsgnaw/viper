@@ -47,7 +47,7 @@ func (s *Security) Decode(decoder Decoder, b []byte, v map[string]interface{}) e
 			return errors.New("security codec: invalid format")
 		}
 		b, iv = []byte(bs[0]), []byte(bs[1])
-		b, err = s.es.Decrypt(b, s.key, iv, false)
+		b, err = s.es.Decrypt(b, s.key, iv, true)
 		if err != nil {
 			return err
 		}
